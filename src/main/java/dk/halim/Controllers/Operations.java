@@ -127,6 +127,11 @@ public class Operations {
 
         byte[] add1Byte = {};
 
+        /**
+         * Mode 1: Enc
+         * Mode 2: MAC
+         * Based on the requirement as mentioned in Appendix D, ICAO
+         * */
         switch (Mode) {
             case 1: add1Byte = Hex.decode("00000001"); break;
             case 2: add1Byte = Hex.decode("00000002"); break;
@@ -157,7 +162,8 @@ public class Operations {
     }
 
     /*
-     * To do : encrypt using 3DES algorithm
+     * Encrypt using 3DES algorithm
+     * Based on the reference from https://www.javatips.net/api/javax.crypto.spec.ivparameterspec
      */
     public static byte[] encrypt(byte[] input, byte[] keyBytes) throws Exception {
 
@@ -176,7 +182,8 @@ public class Operations {
     }
 
     /*
-     * To do : decrypt using 3DES algorithm
+     * Decrypt using 3DES algorithm
+     * Based on the reference from https://www.javatips.net/api/javax.crypto.spec.ivparameterspec
      */
     public static byte[] decrypt(byte[] input, byte[] keyBytes) throws Exception {
 
@@ -244,8 +251,8 @@ public class Operations {
         return DO8E;
     }
 
-    public static String buildDO97(String Le) {
-        String DO97 = "9701" + Le;
+    public static String buildDO97(String data) {
+        String DO97 = "9701" + data;
         return DO97;
     }
 

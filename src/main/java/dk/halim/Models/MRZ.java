@@ -15,6 +15,10 @@ public class MRZ {
 
         passport.setDocumentNumber(documentNumber);
 
+        UpdateStatus.append(currentStatus, "---------------------------------");
+        UpdateStatus.append(currentStatus, "VALIDATING INPUT AND REFORMATTING");
+        UpdateStatus.append(currentStatus, "---------------------------------");
+
         UpdateStatus.append(currentStatus, "\nDocument Number = " + passport.getDocumentNumber());
 
         // Validate and correct the document number, if length is less than 9, append with <
