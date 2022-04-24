@@ -115,7 +115,7 @@ public class ApduInterface {
      */
     public static void MutualAuthentication(ePassport passport, SerialPort portConnected, TextArea currentStatus, String cmd) throws IOException {
 
-        // Check CLA with the documentation
+        // Check CLA against the documentation, 00 or 0C
         ApduCommand ChipAuthentication = new ApduCommand(
                 "00",
                 "82",

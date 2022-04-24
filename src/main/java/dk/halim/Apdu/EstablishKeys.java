@@ -6,6 +6,7 @@ import dk.halim.Models.DataString;
 import dk.halim.Models.ePassport;
 import dk.halim.Views.UpdateStatus;
 import javafx.scene.control.TextArea;
+import org.bouncycastle.util.encoders.Hex;
 
 public class EstablishKeys {
 
@@ -98,6 +99,8 @@ public class EstablishKeys {
         // Calculate session keys (KSMAC) according to Section 9.7.1/Appendix D.1:
         passport.generateKeyICSeedMAC();
         UpdateStatus.append(currentStatus,"KSMAC  = " + passport.getKeyICSeedMAC());
+
+        UpdateStatus.append(currentStatus, "\nSESSION KEY HAS BEEN ESTABLISHED SUCCESSFULLY");
 
     }
 

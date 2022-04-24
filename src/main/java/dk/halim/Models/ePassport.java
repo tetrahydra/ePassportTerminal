@@ -164,6 +164,16 @@ public class ePassport {
         this.rndKeyIFD = Hex.toHexString(this.rndKeyIFDByte).toUpperCase();
     }
 
+    public void setRndIFD(String data){
+        this.rndIFD = data;
+        this.rndIFDByte = Hex.decode(this.rndIFD);
+    }
+
+    public void setRndKeyIFD(String data){
+        this.rndKeyIFD = data;
+        this.rndKeyIFDByte = Hex.decode((this.rndKeyIFD));
+    }
+
     public String getRndIFD(){
         return this.rndIFD;
     }
@@ -244,6 +254,11 @@ public class ePassport {
             this.keyICByte = new SecureRandom().generateSeed(16);
             this.keyIC = Hex.toHexString(this.keyICByte).toUpperCase();
         }
+    }
+
+    public void setKeyIC(String data) {
+        this.keyIC = data;
+        this.keyICByte = Hex.decode(this.keyIC);
     }
 
     public String getKeyIC(){

@@ -31,7 +31,7 @@ public class PerformNFC {
 
         /**
          * Authenticate the applet id
-         * This is to confirm that the card is ISO 9303
+         * This is to confirm that the card conform to ISO 9303
          * */
 
         UpdateStatus.append(currentStatus, "\n------------------------------------------");
@@ -53,11 +53,16 @@ public class PerformNFC {
          * Generate MRZ
          * */
         passport.generateMRZ();
-        UpdateStatus.append(currentStatus, "\nGenerated MRZ: " + passport.getMRZ());
+        UpdateStatus.append(currentStatus, "\nGenerated MRZ = " + passport.getMRZ());
 
         /**
          * Generate keySeed from MRZ_BAC
          * */
+
+        UpdateStatus.append(currentStatus, "\n---------------------------");
+        UpdateStatus.append(currentStatus, "GENERATING BASIC ACCESS KEY");
+        UpdateStatus.append(currentStatus, "---------------------------");
+
         passport.generateKeySeed();
 
         MessageDigest mda = MessageDigest.getInstance("SHA-1", "BC");
@@ -103,7 +108,7 @@ public class PerformNFC {
             UpdateStatus.append(currentStatus,"\nConcatenate the least 4 bytes from rnd.ICC and rnd.IFD");
 
             UpdateStatus.append(currentStatus,"Last 4 from rnd.ICC = " + "XXXXXXXX-" + passport.getRndICC().substring(8));
-            UpdateStatus.append(currentStatus,"Last 4 from rnd.IFC = " + "XXXXXXXX-" + passport.getRndIFD().substring(8));
+            UpdateStatus.append(currentStatus,"Last 4 from rnd.IFD = " + "XXXXXXXX-" + passport.getRndIFD().substring(8));
 
             UpdateStatus.append(currentStatus,"SSC = " + passport.getSSC());
 
@@ -141,7 +146,7 @@ public class PerformNFC {
         UpdateStatus.append(currentStatus,"FINISHED");
         UpdateStatus.append(currentStatus,"--------");
 
-        System.out.println("PerformNFC Done");
+        System.out.println("PerformNFC Completed");
 
     }
 

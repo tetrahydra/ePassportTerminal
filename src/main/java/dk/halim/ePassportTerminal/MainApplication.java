@@ -31,6 +31,8 @@ import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 
 public class MainApplication extends Application {
 
@@ -86,18 +88,19 @@ public class MainApplication extends Application {
         btnDisconnect.setVisible(false);
 
         grid1.add(new Label("Document Number "), 0, 1);
-        TextField documentNumber = new TextField("A0467622");
+        TextField documentNumber = new TextField("L898902C");
         grid1.add(documentNumber, 1, 1, 2, 1);
 
         grid1.add(new Label("Date of Birth "), 0, 2);
-        TextField dateOfBirth = new TextField("08/06/1992");
+        TextField dateOfBirth = new TextField("06/08/1969");
         grid1.add(dateOfBirth, 1, 2, 2, 1);
 
         grid1.add(new Label("Expiry Date "), 0, 3);
-        TextField dateOfExpiry = new TextField("23/12/2015");
+        TextField dateOfExpiry = new TextField("23/06/1994");
         grid1.add(dateOfExpiry, 1, 3, 2, 1);
 
         Button readEPassport = new Button("Read e-Passport");
+        readEPassport.setDisable(true);
         readEPassport.setMinWidth(130);
         readEPassport.setMaxWidth(130);
         grid1.add(readEPassport, 1, 4);
@@ -108,6 +111,7 @@ public class MainApplication extends Application {
         grid1.add(runSimulation, 2, 4);
 
         Button resetArduino = new Button("Reset Reader");
+        resetArduino.setDisable(true);
         resetArduino.setMinWidth(130);
         resetArduino.setMaxWidth(130);
         grid1.add(resetArduino, 1, 5);
@@ -121,19 +125,23 @@ public class MainApplication extends Application {
         PassportPhoto.setImage(image);
         grid1.add(PassportPhoto, 1, 7);
 
-        grid1.add(new Label("First Name "), 0, 8);
+        Label textMRZfirstName = new Label("First Name ");
+        grid1.add(textMRZfirstName, 0, 8);
         Label MRZfirstName = new Label("");
         grid1.add(MRZfirstName, 1, 8, 2, 1);
 
-        grid1.add(new Label("Last Name "), 0, 9);
+        Label textMRZlastName = new Label("Last Name ");
+        grid1.add(textMRZlastName, 0, 9);
         Label MRZlastName = new Label("");
         grid1.add(MRZlastName, 1, 9, 2, 1);
 
-        grid1.add(new Label("Nationality "), 0, 10);
+        Label textMRZNationality = new Label("Nationality ");
+        grid1.add(textMRZNationality, 0, 10);
         Label MRZNationality = new Label("");
         grid1.add(MRZNationality, 1, 10, 2, 1);
 
-        grid1.add(new Label("Sex "), 0, 11);
+        Label textMRZSex = new Label("Sex ");
+        grid1.add(textMRZSex, 0, 11);
         Label MRZSex = new Label("");
         grid1.add(MRZSex, 1, 11, 2, 1);
 
@@ -169,6 +177,16 @@ public class MainApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
+        MRZfirstName.setVisible(false);
+        MRZlastName.setVisible(false);
+        MRZNationality.setVisible(false);
+        MRZSex.setVisible(false);
+        textMRZfirstName.setVisible(false);
+        textMRZlastName.setVisible(false);
+        textMRZNationality.setVisible(false);
+        textMRZSex.setVisible(false);
+        PassportPhoto.setVisible(false);
+
         btnConnect.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -177,6 +195,9 @@ public class MainApplication extends Application {
 
                 String port = (String) comboBoxPorts.getValue();
                 portConnected = ArduinoPort.connectArduino(port, currentStatus);
+
+                readEPassport.setDisable(false);
+                resetArduino.setDisable(false);
             }
         });
 
@@ -189,13 +210,32 @@ public class MainApplication extends Application {
                 ArduinoPort.disconnectArduino(currentStatus);
 
                 portConnected = null;
+
+                readEPassport.setDisable(true);
+                resetArduino.setDisable(true);
             }
         });
 
         runSimulation.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                RunSimulation.Run();
+
+                // Clear the status text for new reading
+                currentStatus.setText("");
+
+                try {
+                    RunSimulation.Run(passport,
+                            currentStatus,
+                            documentNumber.getText(),
+                            dateOfBirth.getText(),
+                            dateOfExpiry.getText());
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (NoSuchProviderException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -205,6 +245,16 @@ public class MainApplication extends Application {
 
                 // Clear the status text for new reading
                 currentStatus.setText("");
+
+                MRZfirstName.setVisible(false);
+                MRZlastName.setVisible(false);
+                MRZNationality.setVisible(false);
+                MRZSex.setVisible(false);
+                textMRZfirstName.setVisible(false);
+                textMRZlastName.setVisible(false);
+                textMRZNationality.setVisible(false);
+                textMRZSex.setVisible(false);
+                PassportPhoto.setVisible(false);
 
                 if (portConnected != null) {
 
@@ -225,6 +275,7 @@ public class MainApplication extends Application {
                                             dateOfExpiry.getText());
 
                                     return null;
+
                                 }
 
                                 @Override
@@ -239,6 +290,16 @@ public class MainApplication extends Application {
                     taskReadNFC.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                         @Override
                         public void handle(WorkerStateEvent event) {
+
+                            MRZfirstName.setVisible(true);
+                            MRZlastName.setVisible(true);
+                            MRZNationality.setVisible(true);
+                            MRZSex.setVisible(true);
+                            textMRZfirstName.setVisible(true);
+                            textMRZlastName.setVisible(true);
+                            textMRZNationality.setVisible(true);
+                            textMRZSex.setVisible(true);
+                            PassportPhoto.setVisible(true);
 
                             UpdateMRZ UpdateMRZ = new UpdateMRZ();
                             UpdateMRZ.show(passport,

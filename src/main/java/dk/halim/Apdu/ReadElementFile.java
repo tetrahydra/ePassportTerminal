@@ -136,6 +136,8 @@ public class ReadElementFile {
 
             DataString N = new DataString();
             N.setData(SelectFile.getN(passport.getSSC(), "DO87"));
+            // 2022-03-20 : When padded, the MAC(N) cannot be verified.
+            //N.setData(Hex.toHexString(BytePadding.pad(N.getDataByte(), 8)).toUpperCase());
             N.setEncrypted(N.getDataByte());
             N.mac(passport.getKeyICSeedMACByte());
 
@@ -194,7 +196,7 @@ public class ReadElementFile {
 
                 DataString K = new DataString();
                 K.setData(passport.getSSC() + DO99);
-                // 2022-03-20 : When unpadded, the RAPDU can be verified.
+                // 2022-03-20 : When padded, the MAC(K) cannot be verified.
                 //K.setData(Hex.toHexString(BytePadding.pad(K.getDataByte(), 8)).toUpperCase());
                 K.setEncrypted(K.getDataByte());
                 K.mac(passport.getKeyICSeedMACByte());
@@ -272,9 +274,9 @@ public class ReadElementFile {
             N.setEncrypted(N.getDataByte());
             N.mac(passport.getKeyICSeedMACByte());
 
-            UpdateStatus.append(currentStatus, "\nN   = Concatenate SSC and M");
-            UpdateStatus.append(currentStatus, "N   = " + N.getEncrypted());
-            UpdateStatus.append(currentStatus, "MAC = " + N.getMAC());
+            UpdateStatus.append(currentStatus, "\nN       = Concatenate SSC and M");
+            UpdateStatus.append(currentStatus, "N       = " + N.getEncrypted());
+            UpdateStatus.append(currentStatus, "MAC (N) = " + N.getMAC());
 
             /**
              * e) Build DO'8E'
@@ -365,21 +367,21 @@ public class ReadElementFile {
 
                 if (new BigInteger(Hex.toHexString(length), 16).intValue() <= new BigInteger("7F", 16).intValue()) {
                     DG_FileLength = new BigInteger(Hex.toHexString(length), 16).intValue() + 2;
-                    UpdateStatus.append(currentStatus, "7F = " + new BigInteger(Hex.toHexString(length), 16).intValue());
+                    UpdateStatus.append(currentStatus, "7F = " + DG_FileLength + " bytes");
                     ASN1datalength = "7F";
                 }
 
                 if (new BigInteger(Hex.toHexString(length), 16).intValue() == new BigInteger("81", 16).intValue()) {
                     byte[] length2 = Arrays.copyOfRange(DO87Decrypt.getDecryptedByte(), 2, 3);
                     DG_FileLength = new BigInteger(Hex.toHexString(length2), 16).intValue() + 3;
-                    UpdateStatus.append(currentStatus, "81 = " + DG_FileLength);
+                    UpdateStatus.append(currentStatus, "81 = " + DG_FileLength + " bytes");
                     ASN1datalength = "81";
                 }
 
                 if (new BigInteger(Hex.toHexString(length), 16).intValue() == new BigInteger("82", 16).intValue()) {
                     byte[] length2 = Arrays.copyOfRange(DO87Decrypt.getDecryptedByte(), 2, 4);
                     DG_FileLength = new BigInteger(Hex.toHexString(length2), 16).intValue() + 4;
-                    UpdateStatus.append(currentStatus, "82 = " + DG_FileLength);
+                    UpdateStatus.append(currentStatus, "82 = " + DG_FileLength + " bytes");
                     ASN1datalength = "82";
                 }
 
