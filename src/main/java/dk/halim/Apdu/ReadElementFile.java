@@ -577,7 +577,7 @@ public class ReadElementFile {
 
         String ProtectedAPDU = FileContent.getProtectedApdu("DO97");
 
-        if (updateTextFlag) UpdateStatus.append(currentStatus, "\nGet remaining file content");
+        if (updateTextFlag) UpdateStatus.append(currentStatus, "\nGet the remaining file content");
         if (updateTextFlag) UpdateStatus.append(currentStatus, "ProtectedAPDU = " + ProtectedAPDU);
 
         command = "CMD APDU " + ProtectedAPDU + " 255\n";
