@@ -240,12 +240,6 @@ public class RunSimulation {
         UpdateStatus.append(currentStatus, "\nCommand Header        = " + SelectFile.getCmdHeader());
         UpdateStatus.append(currentStatus, "Padded Command Header = " + SelectFile.getCmdHeaderPadded());
 
-//        refDoc9303 = "887022120C06C226";
-//        UpdateStatus.append(currentStatus, "\nExpected value = " + refDoc9303);
-//        correct = refDoc9303.equalsIgnoreCase(SelectFile.getCmdHeaderPadded());
-//        UpdateStatus.append(currentStatus, "Is value correct? " + correct);
-//        if (!correct) return;
-
         // Select file code
         SelectFile.setData(FileCode);
 
