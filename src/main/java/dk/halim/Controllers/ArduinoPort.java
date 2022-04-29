@@ -3,6 +3,11 @@ package dk.halim.Controllers;
 import com.fazecast.jSerialComm.SerialPort;
 import javafx.scene.control.TextArea;
 
+/**
+ * The code for connect/disconnect to an Arduino serial is based and improvised from
+ * https://forum.arduino.cc/t/trying-to-communicate-to-arduino-with-jserialcomm-and-kotlin/913482
+ * */
+
 public class ArduinoPort {
 
     static SerialPort arduinoPort = null;

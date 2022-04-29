@@ -3,6 +3,10 @@ package dk.halim.Controllers;
 import javax.crypto.BadPaddingException;
 import java.io.ByteArrayOutputStream;
 
+/**
+ * Original code https://github.com/tkaczenko/cardreader/blob/master/jmrtd/src/main/java/org/jmrtd/Util.java
+ * */
+
 public class BytePadding {
 
     /**
@@ -13,7 +17,6 @@ public class BytePadding {
      * @param blockSize the block size
      *
      * @return padded bytes
-     * https://github.com/tkaczenko/cardreader/blob/master/jmrtd/src/main/java/org/jmrtd/Util.java
      */
     public static byte[] pad(byte[] in, int blockSize) {
         return pad(in, 0, in.length, blockSize);

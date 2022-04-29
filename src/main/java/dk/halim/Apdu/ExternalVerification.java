@@ -13,6 +13,9 @@ public class ExternalVerification {
     /**
      * EXTERNAL VERIFICATION TO CHECK THAT THE SESSION KEY IS CORRECT
      * Expected result: (KSenc, KSmac) and the SSC
+     *
+     * Note: External verification has been verified using the sample data.
+     *       But when tested using physical e-passport, the RAPDU was not correct.
      */
 
     public static void verify(SerialPort portConnected, ePassport passport, TextArea currentStatus) throws Exception {
