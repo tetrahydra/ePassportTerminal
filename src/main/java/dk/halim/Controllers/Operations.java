@@ -22,27 +22,9 @@ public class Operations {
 
     final static String DATE_FORMAT = "dd/MM/yyyy";
 
-    public Operations() throws NoSuchAlgorithmException, NoSuchProviderException {
-    }
-
-    public static byte[] hexStringToByteArray(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
-        }
-        return data;
-    }
-
-    public static String bytesToHexString(byte[] bytes){
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes){
-            sb.append(String.format("%02x", b&0xff));
-        }
-        return sb.toString();
-    }
-
+    /**
+     * Sourced from https://www.baeldung.com/java-convert-hex-to-ascii
+     * */
     public static String hexToAscii(String hexStr) {
         StringBuilder output = new StringBuilder("");
 
@@ -201,6 +183,10 @@ public class Operations {
 
     }
 
+    /*
+     * Encrypt using 3DES algorithm
+     * Based on the reference from https://www.javatips.net/api/javax.crypto.spec.ivparameterspec
+     */
     public static byte[] calculate_mac(byte[] enc, byte[] keyMac) throws NoSuchAlgorithmException, InvalidKeyException {
         Mac mac = Mac.getInstance("ISO9797Alg3Mac");
 
